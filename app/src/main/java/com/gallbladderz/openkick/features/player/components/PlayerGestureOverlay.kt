@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BrightnessLow
-import androidx.compose.material.icons.filled.FastForward
 import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -166,6 +165,15 @@ fun PlayerGestureOverlay(
             }
     ) {
         if (hud != GestureHud.None.ordinal) {
+            // Seek：画面正中央大字显示目标时间，精准定位跳转位置
+            if (hud == GestureHud.Seek.ordinal) {
+                val targetMs = ((seekDragStartPosMs + seekAccumMs)
+                    .coerceIn(0f, (player?.duration ?: 0L).toFloat())).roundToInt()
+                SeekPreviewHud(
+                    timeMs = targetMs.toLong(),
+                    modifier = Modifier.fillMaxSize()
+                )
+            } else {
             Row(
                 modifier = Modifier
                     .align(Alignment.Center)
@@ -176,7 +184,6 @@ fun PlayerGestureOverlay(
                 Icon(
                     imageVector = when (hud) {
                         GestureHud.Brightness.ordinal -> Icons.Default.BrightnessLow
-                        GestureHud.Seek.ordinal -> Icons.Default.FastForward
                         else -> Icons.Default.VolumeUp
                     },
                     contentDescription = null,
@@ -186,15 +193,6 @@ fun PlayerGestureOverlay(
                     text = when (hud) {
                         GestureHud.Brightness.ordinal ->
                             stringResource(R.string.gesture_brightness_percent, hudPercent.roundToInt())
-                        GestureHud.Seek.ordinal -> {
-                            val targetMs = ((seekDragStartPosMs + seekAccumMs)
-                                .coerceIn(0f, (player?.duration ?: 0L).toFloat())).roundToInt()
-                            stringResource(
-                                R.string.gesture_seek_target,
-                                "%+ds".format(hudPercent.roundToInt()),
-                                formatTime(targetMs.toLong())
-                            )
-                        }
                         else ->
                             stringResource(R.string.gesture_volume_percent, hudPercent.roundToInt())
                     },
@@ -202,6 +200,7 @@ fun PlayerGestureOverlay(
                     style = MaterialTheme.typography.labelLarge,
                     modifier = Modifier.padding(start = 8.dp)
                 )
+            }
             }
         }
     }

@@ -77,6 +77,16 @@ fun CustomPlayerControls(
         var sliderDragging by remember { mutableStateOf(false) }
         var sliderValue by remember { mutableFloatStateOf(0f) }
 
+        // 拖动进度条时画面正中央显示目标时间，松手消失
+        if (sliderDragging && duration > 0) {
+            SeekPreviewHud(
+                timeMs = (sliderValue * duration).toLong(),
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .fillMaxSize()
+            )
+        }
+
         Row(
             modifier = Modifier
                 .align(Alignment.TopEnd)
