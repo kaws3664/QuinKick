@@ -36,6 +36,11 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -67,6 +72,10 @@ fun CustomPlayerControls(
     modifier: Modifier = Modifier
 ) {
     Box(modifier = modifier.background(Color.Black.copy(alpha = 0.6f))) {
+
+        // 方案 C：拖动中只更新本地预览值，松手（onValueChangeFinished）才真正 seekTo，避免拖动过程连续 seek 导致抖动
+        var sliderDragging by remember { mutableStateOf(false) }
+        var sliderValue by remember { mutableFloatStateOf(0f) }
 
         Row(
             modifier = Modifier
@@ -156,8 +165,16 @@ fun CustomPlayerControls(
                         style = MaterialTheme.typography.labelSmall
                     )
                     Slider(
-                        value = if (duration > 0) currentPosition.toFloat() / duration.toFloat() else 0f,
-                        onValueChange = { value -> onSeek((value * duration).toLong()) },
+                        value = if (sliderDragging) sliderValue
+                        else if (duration > 0) currentPosition.toFloat() / duration.toFloat() else 0f,
+                        onValueChange = { value ->
+                            sliderDragging = true
+                            sliderValue = value
+                        },
+                        onValueChangeFinished = {
+                            sliderDragging = false
+                            onSeek((sliderValue * duration).toLong())
+                        },
                         modifier = Modifier
                             .weight(1f)
                             .padding(horizontal = 8.dp),

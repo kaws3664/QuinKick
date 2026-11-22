@@ -152,6 +152,7 @@
     <string name="fullscreen_desc">Fullscreen</string>
     <string name="gesture_brightness_percent">Brightness %d%%</string>
     <string name="gesture_volume_percent">Volume %d%%</string>
+    <string name="gesture_seek_target">%1$s (%2$s)</string>
     <string name="github">GitHub</string>
     <string name="hide_crypto_desc">Hides crypto and trading streams from the feed.</string>
     <string name="hide_crypto_title">Crypto &amp; Trading</string>

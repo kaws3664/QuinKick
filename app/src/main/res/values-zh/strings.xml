@@ -152,6 +152,7 @@
     <string name="fullscreen_desc">全屏</string>
     <string name="gesture_brightness_percent">亮度 %d%%</string>
     <string name="gesture_volume_percent">音量 %d%%</string>
+    <string name="gesture_seek_target">%1$s（%2$s）</string>
     <string name="github">GitHub</string>
     <string name="hide_crypto_desc">在信息流中隐藏加密货币和交易直播。</string>
     <string name="hide_crypto_title">加密货币与交易</string>
