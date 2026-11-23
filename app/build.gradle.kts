@@ -19,8 +19,8 @@ android {
         applicationId = "com.gallbladderz.openkick"
         minSdk = 26
         targetSdk = 36
-        versionCode = 8
-        versionName = "1.4.4"
+        versionCode = 9
+        versionName = "1.4.5"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "BFF_BASE_URL", "\"${providers.gradleProperty("bffBaseUrl").getOrElse("https://kick.com/")}\"")
         buildConfigField("String", "KICK_CLIENT_ID", "\"${providers.gradleProperty("kickClientId").getOrElse("")}\"")

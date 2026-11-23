@@ -144,7 +144,8 @@ fun PlayerGestureOverlay(
                             val window = (view.context as? Activity)?.window ?: return@detectVerticalDragGestures
                             val current = window.attributes.screenBrightness
                             val base = if (current == WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE) 0.5f else current
-                            val next = (base - dy / size.height).coerceIn(0f, 1f)
+                            // 灵敏度 x2：全屏高度拖满 = 亮度从一端到另一端来回两遍
+                            val next = (base - dy / size.height * 2f).coerceIn(0f, 1f)
                             window.attributes = window.attributes.apply {
                                 screenBrightness = next
                             }
@@ -171,7 +172,9 @@ fun PlayerGestureOverlay(
                     .coerceIn(0f, (player?.duration ?: 0L).toFloat())).roundToInt()
                 SeekPreviewHud(
                     timeMs = targetMs.toLong(),
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(bottom = 200.dp) // 上移避开中央暂停按钮
                 )
             } else {
             Row(

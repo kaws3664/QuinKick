@@ -84,6 +84,7 @@ fun CustomPlayerControls(
                 modifier = Modifier
                     .align(Alignment.Center)
                     .fillMaxSize()
+                    .padding(bottom = 200.dp) // 上移避开中央暂停按钮
             )
         }
 

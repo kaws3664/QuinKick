@@ -145,7 +145,9 @@ fun VodPlayerScreen(
     var selectedQuality by remember { mutableStateOf<VideoQuality?>(null) }
 
     // VOD 弹幕回放 + 倍速
-    val chatSettings by remember { mutableStateOf(ChatSettings()) }
+    // VOD 弹幕设置：与直播播放器一致，读真实 DataStore 设置（此前硬编码默认值导致 danmakuEnabled=false，回放弹幕从不显示）
+    val settingsRepository = org.koin.compose.koinInject<com.gallbladderz.openkick.core.datastore.SettingsRepository>()
+    val chatSettings by settingsRepository.chatSettingsFlow.collectAsStateWithLifecycle(ChatSettings())
     var playbackSpeed by remember { mutableFloatStateOf(1f) }
     LaunchedEffect(playbackSpeed) {
         exoPlayer?.setPlaybackSpeed(playbackSpeed)
